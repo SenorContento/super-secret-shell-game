@@ -6,9 +6,11 @@
 #include <stdlib.h>
 
 // Readline Library
-#include <sys/stat.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#if defined (READLINE_LIBRARY)
+# include <sys/stat.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+#endif
 
 // This game will be part of my super secret challenge :) !!!
 
