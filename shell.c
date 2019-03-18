@@ -2,6 +2,8 @@
 #include <string.h>
 #include <time.h>
 #include <stdbool.h>
+#include <signal.h>
+#include <stdlib.h>
 
 // This game will be part of my super secret challenge :) !!!
 
@@ -28,6 +30,9 @@ bool colors = true;
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_WHITE   "\x1b[37m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
+
+void signalCatch(int);
+int execute(char*);
 
 int execute(char* command) {
   if(!strcmp(command, "date\n")) {
@@ -62,6 +67,7 @@ int execute(char* command) {
 
 int main(int argc, char *argv[])
 {
+  signal(SIGINT, signalCatch);
   if (argc < 2) {
     if(colors) {
       printf(ANSI_COLOR_RED "You need to specify the IP Address!!!\n" ANSI_COLOR_RESET);
@@ -130,4 +136,17 @@ int main(int argc, char *argv[])
   }
 
   return -1;
+}
+
+// https://stackoverflow.com/a/4217070/6828099
+void signalCatch(int sig) {
+  printf("\n");
+
+  if(colors) {
+    printf(ANSI_COLOR_YELLOW "Signal Interrupt\n" ANSI_COLOR_RESET);
+  } else {
+    printf("Signal Interrupt\n");
+  }
+
+  exit(0);
 }
