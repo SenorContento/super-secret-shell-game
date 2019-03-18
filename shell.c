@@ -18,7 +18,7 @@ Reset: \u001b[0m
 */
 
 // https://stackoverflow.com/a/3219471/6828099
-bool colors = false;
+bool colors = true;
 #define ANSI_COLOR_BLACK   "\x1b[30m"
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -64,7 +64,6 @@ int main(int argc, char *argv[])
 {
   if (argc < 2) {
     if(colors) {
-      // In the current state of argument reading, this code will never be called
       printf(ANSI_COLOR_RED "You need to specify the IP Address!!!\n" ANSI_COLOR_RESET);
     } else {
       printf("You need to specify the IP Address!!!\n");
@@ -73,8 +72,8 @@ int main(int argc, char *argv[])
   }
 
   if(argc == 3) {
-    if(!strcmp(argv[2], "--color")) {
-      colors = true;
+    if(!strcmp(argv[2], "--nocolor")) {
+      colors = false;
     }
   }
 
