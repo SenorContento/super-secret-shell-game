@@ -1,41 +1,132 @@
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
+#include <stdbool.h>
 
 // This game will be part of my super secret challenge :) !!!
+
+/* Colors: http://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
+Black: \u001b[30m
+Red: \u001b[31m
+Green: \u001b[32m
+Yellow: \u001b[33m
+Blue: \u001b[34m
+Magenta: \u001b[35m
+Cyan: \u001b[36m
+White: \u001b[37m
+Reset: \u001b[0m
+*/
+
+// https://stackoverflow.com/a/3219471/6828099
+bool colors = false;
+#define ANSI_COLOR_BLACK   "\x1b[30m"
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_WHITE   "\x1b[37m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
+int execute(char* command) {
+  if(!strcmp(command, "date\n")) {
+    // Mon Mar 18 02:03:53 UTC 2019
+    // https://www.tutorialspoint.com/c_standard_library/c_function_strftime.htm
+    time_t t = time(NULL);
+    struct tm tm = *gmtime(&t); // localtime for computer's local time
+
+    char date[50];
+    strftime(date, sizeof(date), "%a %b %d %I:%M:%S %Z %Y", &tm);
+
+    //printf("%d", colors); // https://stackoverflow.com/a/17307307/6828099
+    if(colors) {
+      printf(ANSI_COLOR_CYAN "%s\n" ANSI_COLOR_RESET, date);
+    } else {
+      printf("%s\n", date);
+    }
+    return 0;
+  }
+
+  if(!strcmp(command, "help\n")) {
+    if(colors) {
+      printf(ANSI_COLOR_RED "The Help Command Does Not Exist Yet!!!\n" ANSI_COLOR_RESET);
+    } else {
+      printf("The Help Command Does Not Exist Yet!!!\n");
+    }
+    return 0;
+  }
+
+  return 1;
+}
 
 int main(int argc, char *argv[])
 {
   if (argc < 2) {
-    printf("You need to specify the IP Address!!!\n");
+    if(colors) {
+      // In the current state of argument reading, this code will never be called
+      printf(ANSI_COLOR_RED "You need to specify the IP Address!!!\n" ANSI_COLOR_RESET);
+    } else {
+      printf("You need to specify the IP Address!!!\n");
+    }
     return 1;
   }
 
-  printf("Welcome to the game %s!!!\n", argv[1]);
+  if(argc == 3) {
+    if(!strcmp(argv[2], "--color")) {
+      colors = true;
+    }
+  }
+
+  if(colors) {
+    printf(ANSI_COLOR_CYAN "Welcome to the game %s!!!\n" ANSI_COLOR_RESET, argv[1]);
+  } else {
+    printf("Welcome to the game %s!!!\n", argv[1]);
+  }
 
   char command[50];
   char* result = NULL;
   while(result == NULL) { //for(;;) {
-    printf("-> ");
+    if(colors) {
+      printf(ANSI_COLOR_RED "-> " ANSI_COLOR_RESET);
+    } else {
+      printf("-> ");
+    }
     result = fgets(command, sizeof(command), stdin);
 
     result = NULL;
-    if (command[strlen(command) - 1] != '\n') {
+    if(command[strlen(command) - 1] != '\n') {
       // https://www.geeksforgeeks.org/why-to-use-fgets-over-scanf-in-c/
       fseek(stdin, 0, SEEK_END);
-      fprintf(stderr, "Sorry, but you are limited to %lu characters!!!\n", strlen(command));
+
+      if(colors) {
+        fprintf(stderr, ANSI_COLOR_RED "Sorry, but you are limited to %lu characters!!!\n" ANSI_COLOR_RESET, strlen(command));
+      } else {
+        fprintf(stderr, "Sorry, but you are limited to %lu characters!!!\n", strlen(command));
+      }
       //printf("Result: %s", result);
       result = NULL;
       command[0] = 0;
       //break;
     }
 
-    if(!strcmp(command, "exit")) {
+    if(colors) {
+      printf(ANSI_COLOR_YELLOW "%s" ANSI_COLOR_RESET, command);
+    } else {
+      printf("%s", command);
+    }
+    fseek(stdin, 0, SEEK_END);
+
+    if(!strcmp(command, "exit\n")) { // May add custom error codes here
       return 0;
     }
 
-    if(command[strlen(command) - 1] != 0) {
-      printf("Command: %s", command);
-      fseek(stdin, 0, SEEK_END);
+    if(execute(command)) {
+      if(colors) {
+        fprintf(stderr, ANSI_COLOR_RED "Command Not Found!!!\n" ANSI_COLOR_RESET);
+      } else {
+        fprintf(stderr, "Command Not Found!!!\n");
+      }
     }
   }
 
