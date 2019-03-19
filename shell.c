@@ -84,25 +84,21 @@ int execute(char* command) {
 int main(int argc, char *argv[])
 {
   signal(SIGINT, signalCatch);
-  if (argc < 2) {
-    if(colors) {
-      printf(ANSI_COLOR_RED "You need to specify the IP Address!!!\n" ANSI_COLOR_RESET);
-    } else {
-      printf("You need to specify the IP Address!!!\n");
-    }
-    return 1;
+  char* name = "Anonymous";
+  if (argc >= 2) {
+    name = argv[1];
   }
 
-  if(argc == 3) {
+  if(argc >= 3) {
     if(!strcmp(argv[2], "--nocolor")) {
       colors = false;
     }
   }
 
   if(colors) {
-    printf(ANSI_COLOR_CYAN "Welcome to the game %s!!!\n" ANSI_COLOR_RESET, argv[1]);
+    printf(ANSI_COLOR_CYAN "Welcome to the game %s!!!\n" ANSI_COLOR_RESET, name);
   } else {
-    printf("Welcome to the game %s!!!\n", argv[1]);
+    printf("Welcome to the game %s!!!\n", name);
   }
 
   // Setup Command Character
