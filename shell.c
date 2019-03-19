@@ -47,6 +47,10 @@ void signalCatch(int);
 int execute(char*);
 
 int execute(char* command) {
+  if(!strcmp(command, "")) {
+    return 0;
+  }
+
   if(!strcmp(command, "date")) {
     // Mon Mar 18 02:03:53 UTC 2019
     // https://www.tutorialspoint.com/c_standard_library/c_function_strftime.htm
@@ -154,14 +158,16 @@ int main(int argc, char *argv[])
     #endif
 
     // Process Command
-    if(colors) {
-      printf(ANSI_COLOR_YELLOW "%s\n" ANSI_COLOR_RESET, command);
-    } else {
-      printf("%s\n", command);
-    }
+    if(strcmp(command, "")) { // Not A Empty Line
+      if(colors) {
+        printf(ANSI_COLOR_YELLOW "%s\n" ANSI_COLOR_RESET, command);
+      } else {
+        printf("%s\n", command);
+      }
 
-    if(!strcmp(command, "exit")) { // May add custom error codes here
-      return 0;
+      if(!strcmp(command, "exit")) { // May add custom error codes here
+        return 0;
+      }
     }
 
     if(execute(command)) {
