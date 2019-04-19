@@ -6,7 +6,7 @@ endif
 export ROOT=$(realpath $(dir $(lastword $(MAKEFILE_LIST))))
 
 make:
-	gcc ${ROOT}/shell.c -lreadline -DREADLINE_LIBRARY -o ${prefix}/shell
+	gcc ${ROOT}/src/shell.c -lreadline -DREADLINE_LIBRARY -o ${prefix}/shell
 
 noreadline:
-	gcc ${ROOT}/shell.c -o ${prefix}/shell
+	gcc ${ROOT}/src/shell.c -o ${prefix}/shell
