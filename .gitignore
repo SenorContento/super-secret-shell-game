@@ -1,2 +1,4 @@
 a.out
 shell
+.deps
+autom4te.cache
