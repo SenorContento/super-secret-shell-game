@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = foreign
 
-gamesdir=@gamesdir@
-games_PROGRAMS = shell
+gamedir=@gamedir@
+game_PROGRAMS = shell
 
 shell_SOURCES = src/shell.c

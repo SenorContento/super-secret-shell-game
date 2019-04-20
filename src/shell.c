@@ -81,8 +81,7 @@ int execute(char* command) {
   return 1;
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
   signal(SIGINT, signalCatch);
   char* name = "Anonymous";
   if (argc >= 2) {

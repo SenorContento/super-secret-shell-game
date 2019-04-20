@@ -22,11 +22,11 @@ AS_IF([test "x$enable_readline" != "xno"], [
 dnl End Detect Readline
 
 dnl Detect if Custom Installation Directory
-AS_IF([test "$gamesdir" === ""], [
-  AC_SUBST(gamesdir, "/usr/games")
+AS_IF([test "$gamedir" === ""], [
+  AC_SUBST(gamedir, "/usr/games")
 ])
 
-AC_ARG_VAR([gamesdir], AS_HELP_STRING([Change Installation Directory]))
+AC_ARG_VAR([gamedir], AS_HELP_STRING([Change Installation Directory]))
 dnl End Detect Custom Install
 
 AC_SUBST(AM_CFLAGS)
