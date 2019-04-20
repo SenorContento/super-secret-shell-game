@@ -6,6 +6,7 @@ dnl https://stackoverflow.com/a/3377708/6828099
 
 AC_INIT([shell], [0.1], [alex.shell@senorcontento.com])
 
+dnl Detect if Readline is Disabled
 AC_ARG_ENABLE([readline],
     AS_HELP_STRING([--disable-readline], [Disable Readline Support]))
 
@@ -18,6 +19,15 @@ AS_IF([test "x$enable_readline" != "xno"], [
 
   AM_CFLAGS="$AM_CFLAGS -lreadline -DREADLINE_LIBRARY"
 ])
+dnl End Detect Readline
+
+dnl Detect if Custom Installation Directory
+AS_IF([test "$gamesdir" === ""], [
+  AC_SUBST(gamesdir, "/usr/games")
+])
+
+AC_ARG_VAR([gamesdir], AS_HELP_STRING([Change Installation Directory]))
+dnl End Detect Custom Install
 
 AC_SUBST(AM_CFLAGS)
 AM_INIT_AUTOMAKE([subdir-objects])

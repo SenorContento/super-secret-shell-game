@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = foreign
 
-gamesdir="/usr/games"
+gamesdir=@gamesdir@
 games_PROGRAMS = shell
 
 shell_SOURCES = src/shell.c
